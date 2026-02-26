@@ -1,30 +1,12 @@
 
-def drone_mission():
-    pass
+from arena_sdk import *
 
-if __name__ == "__main__":
+drone = Pioneer("pioneer1")
+rts = Geobot("geobot1")
+print(type(drone))
+print(type(rts))
 
-    points = [
-        (-3, 5),
-        (0, 0),
-        (-1, 0),
-        (0, 0),
-        (1, 1),
-        (-3, 5),
-        (3, -1),
-        (-1, -1),
-        (0, 0),
-        (-2, 1)
-    ]
-
-    points1 = []
-    points2 = []
-
-    for point in points:
-        if point[0] < 0:
-            points1.append(point)
-        else:
-            points2.append(point)
-    
-    print(f"Массив точек для первого дрона: {points1}")
-    print(f"Массив точек для второго дрона: {points2}")
+if type(drone) is Pioneer:
+    print(type(drone) is Pioneer)
+if type(rts) is Geobot:
+    print(type(rts) is Geobot)
