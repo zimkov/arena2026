@@ -160,78 +160,57 @@ else:
 print(f"Максимальное кол-во точек для одной РТС: {count_points}")
 
 for i in range(count_points):
-    # Проверка если есть точки для обоих ртс
     if i < len(points_rts1) and i < len(points_rts2):
+        rts1_have_points = True
+        rts2_have_points = True
+    elif i == len(points_rts1) and i < len(points_rts2):
+        rts1_have_points = False
+        rts2_have_points = True
+        print(f"РТС 1 закончил миссию")
+    elif i < len(points_rts1) and i == len(points_rts2):
+        rts1_have_points = True
+        rts2_have_points = False
+        print(f"РТС 2 закончил миссию")
+    elif i == len(points_rts1) or i == len(points_rts2):
+        rts1_have_points = False
+        rts2_have_points = False
+        print(f"РТС закончили миссию")
 
-        point1 = (points_rts1[i][0], points_rts1[i][1])
-        point2 = (points_rts2[i][0], points_rts2[i][1])
-
-        rts1.goto(x=point1[0], y=point1[1])
-        rts2.goto(x=point2[0], y=point2[1])
-
-        print(f"РТС 1 едет в точку: {point1}")
-        print(f"РТС 2 едет в точку: {point2}")
+    # Проверка если есть точки для обоих ртс
+    if rts1_have_points and rts2_have_points:
+        if rts1_have_points:
+            point1 = (points_rts1[i][0], points_rts1[i][1])
+            rts1.goto(x=point1[0], y=point1[1])
+            print(f"РТС 1 едет в точку: {point1}")
+        
+        if rts2_have_points:
+            point2 = (points_rts2[i][0], points_rts2[i][1])
+            rts2.goto(x=point2[0], y=point2[1])
+            print(f"РТС 2 едет в точку: {point2}")
 
         time.sleep(10)
 
-        rts1.led_control(255, 0, 0)
-        rts2.led_control(255, 0, 0)
+        if rts1_have_points:
+            rts1.led_control(255, 0, 0)
+        if rts2_have_points:
+            rts2.led_control(255, 0, 0)
 
         time.sleep(5)
 
-        rts1.led_control(0, 0, 0)
-        rts2.led_control(0, 0, 0)
+        if rts1_have_points:
+            rts1.led_control(0, 0, 0)
+            rts1.goto(base_rts1[0], base_rts1[1])
+            print(f"РТС 1 везет ранненого на базу")
 
-        rts1.goto(base_rts1[0], base_rts1[1])
-        rts2.goto(base_rts2[0], base_rts2[1])
-
-        print(f"РТС 1 везет ранненого на базу")
-        print(f"РТС 2 везет ранненого на базу")
-
+        if rts2_have_points:
+            rts2.led_control(0, 0, 0)
+            rts2.goto(base_rts2[0], base_rts2[1])
+            print(f"РТС 2 везет ранненого на базу")
+        
         time.sleep(10)
-
-        rts1.led_control(255, 0, 0)
-        rts2.led_control(255, 0, 0)
+        if rts1_have_points: rts1.led_control(255, 0, 0)
+        if rts2_have_points: rts2.led_control(255, 0, 0)
 
         time.sleep(5)
-
-        rts1.led_control(0, 0, 0)
-        rts2.led_control(0, 0, 0)
-
-    elif i < len(points_rts1): # Проверка если состались точки для первого ртс
-        point1 = (points_rts1[i][0], points_rts1[i][1])
-
-        rts1.goto(x=point1[0], y=point1[1])
-        print(f"РТС 1 едет в точку: {point1}")
-        time.sleep(10)
-
-        rts1.led_control(255, 0, 0)
-        time.sleep(5)
-        rts1.led_control(0, 0, 0)
-
-        rts1.goto(base_rts1[0], base_rts1[1])
-        print(f"РТС 1 везет ранненого на базу")
-        time.sleep(10)
-
-        rts1.led_control(255, 0, 0)
-        time.sleep(5)
-        rts1.led_control(0, 0, 0)
-    
-    elif i < len(points_rts2): # Проверка если состались точки для второго ртс
-        point2 = (points_rts2[i][0], points_rts2[i][1])
-
-        rts2.goto(x=point2[0], y=point2[1])
-        print(f"РТС 2 едет в точку: {point2}")
-        time.sleep(10)
-
-        rts2.led_control(255, 0, 0)
-        time.sleep(5)
-        rts2.led_control(0, 0, 0)
-
-        rts2.goto(base_rts2[0], base_rts2[1])
-        print(f"РТС 2 везет ранненого на базу")
-        time.sleep(10)
-
-        rts2.led_control(255, 0, 0)
-        time.sleep(5)
-        rts2.led_control(0, 0, 0)
+        if rts1_have_points: rts1.led_control(0, 0, 0)
+        if rts2_have_points: rts2.led_control(0, 0, 0)
